@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #1A1A1A;
+  background: #FFFFF0;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #FFFFF0 0%, #FFF8E7 50%, #FFFFF0 100%);
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-wine-600 to-wine-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-gold hover:scale-[1.02] active:scale-[0.98] border border-gold-400/30;
+  }
+
+  .btn-gold {
+    @apply bg-gradient-to-r from-gold-500 to-gold-600 text-wine-900 px-6 py-3 rounded-lg font-bold transition-all duration-300 hover:shadow-gold hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .card-luxury {
+    @apply bg-white/80 backdrop-blur-sm rounded-xl border border-gold-200/50 shadow-card transition-all duration-300 hover:shadow-card-hover;
+  }
+
+  .card-selected {
+    @apply ring-2 ring-gold-500 shadow-gold border-gold-400;
+  }
+
+  .text-gold-gradient {
+    @apply bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 bg-clip-text text-transparent;
+  }
+
+  .divider-gold {
+    @apply h-px bg-gradient-to-r from-transparent via-gold-400 to-transparent;
+  }
+}
+
+@layer utilities {
+  .bg-texture {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .scrollbar-thin-gold::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin-gold::-webkit-scrollbar-track {
+    background: #FFF8E7;
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin-gold::-webkit-scrollbar-thumb {
+    background: #D4AF37;
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin-gold::-webkit-scrollbar-thumb:hover {
+    background: #B8922E;
+  }
+}
