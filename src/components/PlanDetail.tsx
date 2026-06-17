@@ -13,6 +13,7 @@ import {
   X,
   Users,
   Clock,
+  Maximize2,
 } from 'lucide-react';
 import type { ReplaceCategory } from '@/types/banquet';
 
@@ -114,7 +115,7 @@ function ItemCard({ name, description, price, extra, onReplace, onRemove, showRe
 }
 
 export default function PlanDetail() {
-  const { getSelectedPlan, openReplaceModal, addEntertainment, removeEntertainment, isGenerating, plans } = useBanquetStore();
+  const { getSelectedPlan, openReplaceModal, addEntertainment, removeEntertainment, isGenerating, plans, openDetailModal } = useBanquetStore();
   const selectedPlan = getSelectedPlan();
 
   if (isGenerating) {
@@ -153,13 +154,22 @@ export default function PlanDetail() {
   };
 
   return (
-    <div className="flex-1 p-8 overflow-y-auto scrollbar-thin-gold bg-texture">
+    <div className="flex-1 p-8 pb-56 overflow-y-auto scrollbar-thin-gold bg-texture">
       <div className="max-w-3xl mx-auto">
         <div className="mb-6 animate-fade-in">
           <div className="flex items-end justify-between mb-2">
-            <h2 className="font-display text-3xl font-bold text-wine-800">
-              {selectedPlan.name}
-            </h2>
+            <div className="flex items-center gap-3">
+              <h2 className="font-display text-3xl font-bold text-wine-800">
+                {selectedPlan.name}
+              </h2>
+              <button
+                onClick={openDetailModal}
+                className="p-2 rounded-lg bg-wine-50 text-wine-600 hover:bg-wine-100 transition-colors border border-wine-200/50"
+                title="全屏查看详情"
+              >
+                <Maximize2 className="w-4 h-4" />
+              </button>
+            </div>
             <div className="text-right">
               <p className="text-sm text-ink-400 mb-1">预计总预算</p>
               <p className="text-3xl font-bold text-gold-600">

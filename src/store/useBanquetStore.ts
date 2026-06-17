@@ -30,6 +30,8 @@ interface BanquetState {
     category: ReplaceCategory | null;
     entertainmentIndex: number | null;
   };
+  detailModalOpen: boolean;
+  exportToast: { show: boolean; message: string };
 
   setScale: (scale: ScaleType) => void;
   setVenue: (venue: VenueType) => void;
@@ -42,6 +44,9 @@ interface BanquetState {
   openReplaceModal: (category: ReplaceCategory, entertainmentIndex?: number) => void;
   closeReplaceModal: () => void;
 
+  openDetailModal: () => void;
+  closeDetailModal: () => void;
+
   replaceStyle: (style: BanquetStyle) => void;
   replaceDecoration: (decoration: Decoration) => void;
   replaceEntertainment: (entertainment: Entertainment, index: number) => void;
@@ -51,6 +56,8 @@ interface BanquetState {
   replaceSouvenir: (souvenir: Souvenir) => void;
 
   getReplaceOptions: () => any[];
+  exportPlan: () => void;
+  hideExportToast: () => void;
 }
 
 export const useBanquetStore = create<BanquetState>((set, get) => ({
@@ -68,6 +75,8 @@ export const useBanquetStore = create<BanquetState>((set, get) => ({
     category: null,
     entertainmentIndex: null,
   },
+  detailModalOpen: false,
+  exportToast: { show: false, message: '' },
 
   setScale: (scale) => set((state) => ({
     params: { ...state.params, scale },
@@ -246,4 +255,88 @@ export const useBanquetStore = create<BanquetState>((set, get) => ({
         return [];
     }
   },
+
+  openDetailModal: () => set({ detailModalOpen: true }),
+  closeDetailModal: () => set({ detailModalOpen: false }),
+
+  exportPlan: () => {
+    const state = get();
+    const plan = state.getSelectedPlan();
+    if (!plan) {
+      set({ exportToast: { show: true, message: '暂无方案可导出' } });
+      setTimeout(() => set({ exportToast: { show: false, message: '' } }), 2500);
+      return;
+    }
+
+    function formatPrice(price: number): string {
+      return new Intl.NumberFormat('zh-CN', {
+        style: 'currency',
+        currency: 'CNY',
+        minimumFractionDigits: 0,
+      }).format(price);
+    }
+
+    const content = `==============================
+宴会策划方案 - ${plan.name}
+==============================
+
+【方案概况】
+  宾客人数: ${plan.guestCount} 位
+  匹配度: ${plan.matchScore}%
+  总预算: ${formatPrice(plan.totalBudget)}
+
+【预算明细】
+  场地费用: ${formatPrice(plan.breakdown.venue)}
+  场地布置: ${formatPrice(plan.breakdown.decoration)}
+  娱乐项目: ${formatPrice(plan.breakdown.entertainment)}
+  餐饮费用: ${formatPrice(plan.breakdown.cuisine)}
+  伴手礼品: ${formatPrice(plan.breakdown.souvenir)}
+  服务费:   ${formatPrice(plan.breakdown.service)}
+
+【宴会风格】
+  ${plan.style.name}
+  ${plan.style.description}
+
+【场地布置】
+  ${plan.decoration.name}
+  ${plan.decoration.description}
+  费用: ${formatPrice(plan.decoration.price)}
+
+【娱乐项目】
+${plan.entertainment.map((e, i) => `  ${i + 1}. ${e.name}
+     ${e.description}
+     时长: ${e.duration}
+     费用: ${formatPrice(e.price)}`).join('\n\n')}
+
+【菜品套餐】
+  ${plan.cuisine.name} (${plan.cuisine.cuisineType})
+  ${plan.cuisine.description}
+  单价: ${formatPrice(plan.cuisine.pricePerPerson)}/人
+  小计: ${formatPrice(plan.breakdown.cuisine)}
+
+【伴手礼品】
+  ${plan.souvenir.name}
+  ${plan.souvenir.description}
+  单价: ${formatPrice(plan.souvenir.pricePerPiece)}/份
+  小计: ${formatPrice(plan.breakdown.souvenir)}
+
+==============================
+生成时间: ${new Date().toLocaleString('zh-CN')}
+==============================`;
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `宴会方案_${plan.name}_${Date.now()}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    set({ exportToast: { show: true, message: `方案「${plan.name}」已导出成功！` } });
+    setTimeout(() => set({ exportToast: { show: false, message: '' } }), 2500);
+  },
+
+  hideExportToast: () => set({ exportToast: { show: false, message: '' } }),
 }));

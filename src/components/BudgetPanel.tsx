@@ -7,6 +7,8 @@ import {
   Utensils,
   Gift,
   BadgeDollarSign,
+  Maximize2,
+  Download,
 } from 'lucide-react';
 
 function formatPrice(price: number): string {
@@ -39,7 +41,7 @@ function BudgetItem({ icon: Icon, label, amount, color }: BudgetItemProps) {
 }
 
 export default function BudgetPanel() {
-  const { getSelectedPlan, plans } = useBanquetStore();
+  const { getSelectedPlan, plans, exportPlan, openDetailModal } = useBanquetStore();
   const selectedPlan = getSelectedPlan();
 
   if (plans.length === 0 || !selectedPlan) {
@@ -84,7 +86,11 @@ export default function BudgetPanel() {
             ))}
           </div>
 
-          <button className="btn-gold px-8 py-3 text-base">
+          <button
+            onClick={exportPlan}
+            className="btn-gold px-8 py-3 text-base flex items-center gap-2"
+          >
+            <Download className="w-4 h-4" />
             导出方案
           </button>
         </div>

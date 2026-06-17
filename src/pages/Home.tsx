@@ -5,6 +5,8 @@ import PlanSidebar from '@/components/PlanSidebar';
 import PlanDetail from '@/components/PlanDetail';
 import BudgetPanel from '@/components/BudgetPanel';
 import ReplaceModal from '@/components/ReplaceModal';
+import PlanDetailModal from '@/components/PlanDetailModal';
+import ExportToast from '@/components/ExportToast';
 
 export default function Home() {
   const { plans } = useBanquetStore();
@@ -34,6 +36,8 @@ export default function Home() {
 
       <BudgetPanel />
       <ReplaceModal />
+      <PlanDetailModal />
+      <ExportToast />
     </div>
   );
 }
