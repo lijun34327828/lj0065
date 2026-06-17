@@ -76,6 +76,7 @@ export interface BanquetPlan {
   breakdown: BudgetBreakdown;
   matchScore: number;
   guestCount: number;
+  timeline?: BanquetTimeline;
 }
 
 export interface ParamOption {
@@ -86,3 +87,19 @@ export interface ParamOption {
 }
 
 export type ReplaceCategory = 'style' | 'decoration' | 'entertainment' | 'cuisine' | 'souvenir';
+
+export type TimelineSegmentType = 'welcome' | 'opening' | 'speech' | 'dish' | 'entertainment' | 'lottery' | 'farewell' | 'custom';
+
+export interface TimelineSegment {
+  id: string;
+  type: TimelineSegmentType;
+  label: string;
+  durationMinutes: number;
+  note: string;
+}
+
+export interface BanquetTimeline {
+  startHour: number;
+  startMinute: number;
+  segments: TimelineSegment[];
+}

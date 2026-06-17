@@ -16,6 +16,7 @@ import {
   Maximize2,
 } from 'lucide-react';
 import type { ReplaceCategory } from '@/types/banquet';
+import TimelineView from '@/components/TimelineView';
 
 function formatPrice(price: number): string {
   return new Intl.NumberFormat('zh-CN', {
@@ -271,6 +272,8 @@ export default function PlanDetail() {
               onReplace={() => handleReplace('souvenir')}
             />
           </Section>
+
+          <TimelineView />
         </div>
       </div>
     </div>
